@@ -1,5 +1,11 @@
  <?php
+session_start();
 include "navbar.php";
+
+if (isset($_SESSION['user'])) {
+    header("location:employee-list.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -9,12 +15,32 @@ include "navbar.php";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Employee Management System</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    .carousel-item img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+    }
+
+    .carousel-caption-custom {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .carousel-item img {
+        height: 250px;
+      }
+    }
+  </style>
 </head>
 <body class="bg-light">
 
   <!-- Carousel Start -->
   <div id="homeCarousel" class="carousel slide" data-bs-ride="carousel">
-    
+
     <div class="carousel-indicators">
       <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="0" class="active"></button>
       <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="1"></button>
@@ -24,21 +50,32 @@ include "navbar.php";
     <div class="carousel-inner">
 
       <div class="carousel-item active">
-        <img src="slide 4.jpg" class="d-block w-100" alt="Slide 1" style="height: 500px; object-fit: cover;">
-        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
-          <h1 class="fw-bold">Employee Management System</h1>
-          <p>Manage employee records quickly, easily, and professionally.</p>
-          
+        <img src="imag7.webp" alt="Slide 1">
+        <div class="carousel-caption d-none d-md-block">
+          <div class="carousel-caption-custom">
+            <h1 class="fw-bold">Employee Management System</h1>
+            <p>Manage employee records quickly, easily, and professionally.</p>
+          </div>
         </div>
       </div>
- 
 
       <div class="carousel-item">
-        <img src="slide 5.jpg" class="d-block w-100" alt="Slide 2" style="height: 500px; object-fit: cover;">
-        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
-          <h1 class="fw-bold">Track Employee Details</h1>
-          <p>View employee list, profiles, salary data, and other details in one place.</p>
-            
+        <img src="imag8.webp" alt="Slide 2">
+        <div class="carousel-caption d-none d-md-block">
+          <div class="carousel-caption-custom">
+            <h1 class="fw-bold">Track Employee Details</h1>
+            <p>View employee list, profiles, salary data, and other details in one place.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-item">
+        <img src="slide 6.jpg" alt="Slide 3">
+        <div class="carousel-caption d-none d-md-block">
+          <div class="carousel-caption-custom">
+            <h1 class="fw-bold">CRUD Operations Completed</h1>
+            <p>Create, Read, Update, and Delete employee records easily.</p>
+          </div>
         </div>
       </div>
 
@@ -60,7 +97,11 @@ include "navbar.php";
       <h2 class="fw-bold">Welcome to Employee Management System</h2>
       <p class="text-muted mt-3">
         This system helps you manage employee records in a simple and efficient way.
-        You can add employees, view employee details, update information, and organize your data properly.
+        You can add employees, view employee details, update information, and delete records easily.
+      </p>
+      <p class="text-muted">
+        The Employee Management System includes complete CRUD operations:
+        <strong>Create, Read, Update, and Delete</strong>.
       </p>
     </div>
   </section>
@@ -70,38 +111,46 @@ include "navbar.php";
     <h2 class="text-center fw-bold mb-4">System Features</h2>
     <div class="row g-4">
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <div class="card shadow-sm border-0 h-100 text-center">
           <div class="card-body">
-            <h4 class="card-title">Add Employee</h4>
+            <h4 class="card-title">Create</h4>
             <p class="card-text text-muted">
-              Easily add new employee records.
+              Add new employee records easily into the system.
             </p>
-             
           </div>
         </div>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <div class="card shadow-sm border-0 h-100 text-center">
           <div class="card-body">
-            <h4 class="card-title">Employee List</h4>
+            <h4 class="card-title">Read</h4>
             <p class="card-text text-muted">
-              View all employee records in a clean table format and manage them properly.
+              View all employee records in a clean and organized format.
             </p>
-           
           </div>
         </div>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <div class="card shadow-sm border-0 h-100 text-center">
           <div class="card-body">
-            <h4 class="card-title">Dashboard</h4>
+            <h4 class="card-title">Update</h4>
             <p class="card-text text-muted">
-              Access important sections quickly and control your employee management workflow.
+              Edit employee information whenever changes are required.
             </p>
-           
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card shadow-sm border-0 h-100 text-center">
+          <div class="card-body">
+            <h4 class="card-title">Delete</h4>
+            <p class="card-text text-muted">
+              Remove employee records from the system when needed.
+            </p>
           </div>
         </div>
       </div>
@@ -109,7 +158,7 @@ include "navbar.php";
     </div>
   </section>
 
-    <!-- About Section -->
+  <!-- About Section -->
   <section id="about" class="container pb-5">
     <div class="card shadow-sm border-0">
       <div class="row g-0 align-items-center">
@@ -124,7 +173,7 @@ include "navbar.php";
               It reduces manual work and makes it easier to handle employee records from one place.
             </p>
             <p class="card-text text-muted">
-              This project includes registration, login, dashboard access, employee entry, and employee listing features.
+              This project includes registration, login, dashboard access, and complete employee CRUD operations.
             </p>
             <a href="#" class="btn btn-outline-primary">Read More</a>
           </div>
@@ -133,7 +182,6 @@ include "navbar.php";
     </div>
   </section>
 
-  
   <!-- Contact/Info Section -->
   <section class="container pb-5">
     <div class="card border-0 shadow-sm">
@@ -142,7 +190,6 @@ include "navbar.php";
         <p class="text-muted">
           Use this system to maintain employee data, improve organization, and save time in daily record handling.
         </p>
-        
       </div>
     </div>
   </section>
